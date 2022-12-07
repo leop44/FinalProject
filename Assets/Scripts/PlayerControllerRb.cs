@@ -7,8 +7,8 @@ public class PlayerControllerRb : MonoBehaviour
     public Rigidbody rb;
     private Vector3 velocity;
     private Vector3 startPos;
-    private float movSpeed = 10f;
-    private float jumpHeight = 300f;
+    private float movSpeed;
+    private float jumpHeight = 400f;
     private bool grounded;
     private bool jump;
 
@@ -23,7 +23,7 @@ public class PlayerControllerRb : MonoBehaviour
     private void Update()
     {
         // Movement & Rotation
-        hor = Input.GetAxisRaw("Horizontal");
+        hor = Input.GetAxis("Horizontal");
         velocity = Vector3.zero;
 
         if (transform.position.y < -20) //Respawn by fall
@@ -37,12 +37,19 @@ public class PlayerControllerRb : MonoBehaviour
         {
             Jump();
         }
+        if (!jump)
+        {
+            movSpeed = 10f;
+        }
+        else 
+        {
+            movSpeed = 2f;
+        }
     }
 
     private void FixedUpdate()
     {
-        if (grounded && !jump)
-        {
+
             if (hor != 0)
             {
                 Vector3 direction = (transform.right * hor).normalized;
@@ -50,7 +57,7 @@ public class PlayerControllerRb : MonoBehaviour
             }
             velocity.y = rb.velocity.y;
             rb.velocity = velocity;
-        }
+        
     }
 
     private void Respawn() 
